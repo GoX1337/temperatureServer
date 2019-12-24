@@ -1,0 +1,19 @@
+{
+  "name": "temperature-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "init": "rm -f *.db && node db.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "socket.io": "^2.3.0",
+    "sqlite3": "^4.1.1"
+  }
+}
