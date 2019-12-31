@@ -40,7 +40,7 @@ app.get('/config', (req, res) => {
         if(err){
             res.status(500).send();
         } else {
-            res.send(row);
+            res.send(row.value);
         }
     });
 });
