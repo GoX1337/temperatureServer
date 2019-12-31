@@ -35,6 +35,16 @@ app.get('/temperature', (req, res) => {
     });
 });
 
+app.get('/config', (req, res) => {
+    db.get("SELECT * FROM config", (err, row) => {
+        if(err){
+            res.status(500).send();
+        } else {
+            res.send(row);
+        }
+    });
+});
+
 io.on('connection', (socket) => {
     console.log('socket client is connected');
 });
