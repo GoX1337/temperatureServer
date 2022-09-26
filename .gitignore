@@ -60,3 +60,4 @@ typings/
 public/uploads
 public/sounds
 public/videos
+*.db
