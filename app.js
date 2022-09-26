@@ -38,6 +38,6 @@ io.on('connection', (socket) => {
     console.log('socket client is connected');
 });
   
-server.listen(8080, () => {
-    console.log("Server started listening on 8080...");
+server.listen(3000, () => {
+    console.log("Server started listening on 3000...");
 });
