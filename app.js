@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('temperature.db');
+const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
-var io = require('socket.io')(server);
+const temperatureDao = require('./temperature');
+const configDao = require('./config');
 
 app.use(bodyParser.json());   
 app.use(express.static(__dirname + '/public'));
@@ -14,35 +14,24 @@ app.get('/', (req, res) => {
 });
 
 app.post('/temperature', (req, res) => {
-    var stmt = db.prepare("INSERT INTO temperature VALUES (?, ?)");
-    let d = new Date();
-    let v = req.body.temperature;
-    stmt.run(d, v);
-    stmt.finalize();
-    let msg = {date:d, value:v};
-    console.log(req.body, msg);
+    console.log(req.body);
+    const temperature = req.body.temperature;
+    const humidity = req.body.humidity;
+    const timestamp = new Date();
+    temperatureDao.save(timestamp, temperature, humidity);
+    let msg = {timestamp, temperature};
     io.emit("newtemp", msg);
     res.send("OK");
 });
 
-app.get('/temperature', (req, res) => {
-    db.all("SELECT * FROM temperature ORDER BY date ASC", (err, rows) => {
-        if(err){
-            res.status(500).send();
-        } else {
-            res.send(rows);
-        }
-    });
+app.get('/temperature', async (req, res) => {
+    const temperatures = await temperatureDao.findAll();
+    res.send(temperatures);  
 });
 
-app.get('/config', (req, res) => {
-    db.get("SELECT * FROM config", (err, row) => {
-        if(err){
-            res.status(500).send();
-        } else {
-            res.send(row.value);
-        }
-    });
+app.get('/config', async (req, res) => {
+    const cfg = await configDao.get();
+    res.send(cfg);
 });
 
 io.on('connection', (socket) => {

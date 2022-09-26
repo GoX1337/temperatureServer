@@ -52,8 +52,8 @@ window.onload = function() {
     console.log(socket)
     socket.on('newtemp', (msg) => {
         console.log('newtemp', msg);
-        config.data.labels.push(msg.date);
-        config.data.datasets[0].data.push(msg.value);
+        config.data.labels.push(msg.timestamp);
+        config.data.datasets[0].data.push(msg.temperature);
         if(config.data.labels.length > 20){
             config.data.labels = config.data.labels.slice(-20);
             config.data.datasets[0].data = config.data.datasets[0].data.slice(-20);
@@ -70,8 +70,8 @@ window.onload = function() {
         let data = [];
         let labels = [];
         rep.forEach(e => {
-            data.push(e.value);
-            labels.push(new Date(e.date).toJSON());
+            data.push(e.temperature);
+            labels.push(new Date(e.timestamp).toJSON());
         });
 
         if(labels.length > 20){
