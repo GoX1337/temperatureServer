@@ -54,9 +54,9 @@ window.onload = function() {
         console.log('newtemp', msg);
         config.data.labels.push(msg.timestamp);
         config.data.datasets[0].data.push(msg.temperature);
-        if(config.data.labels.length > 20){
-            config.data.labels = config.data.labels.slice(-20);
-            config.data.datasets[0].data = config.data.datasets[0].data.slice(-20);
+        if(config.data.labels.length > 100){
+            config.data.labels = config.data.labels.slice(-100);
+            config.data.datasets[0].data = config.data.datasets[0].data.slice(-100);
         }
         window.myLine.update();
     });
@@ -74,9 +74,9 @@ window.onload = function() {
             labels.push(new Date(e.timestamp).toJSON());
         });
 
-        if(labels.length > 20){
-            labels = labels.slice(-20);
-            data = data.slice(-20);
+        if(labels.length > 100){
+            labels = labels.slice(-100);
+            data = data.slice(-100);
         }
 
         config.data.labels = labels;
